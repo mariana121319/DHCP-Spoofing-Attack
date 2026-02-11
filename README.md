@@ -2,7 +2,7 @@
 
 ## 📌 Nombre del Proyecto
 
-**DHCP Rogue Server Attack - Ataque de Suplantación de Servidor DHCP**
+**DHCP Spoofing Server Attack - Ataque de Suplantación de Servidor DHCP**
 
 ---
 
@@ -24,7 +24,7 @@ El ataque funciona porque **DHCP no tiene autenticación nativa**, y el cliente 
 
 ## 🎯 Objetivo del Script
 
-El script `dhcp_rogue.py` tiene como objetivo:
+El script `dhcp_spoofing.py` tiene como objetivo:
 
 1. **Escuchar solicitudes DHCP DISCOVER** en la red
 2. **Responder antes que el servidor DHCP legítimo** con un DHCP OFFER malicioso
@@ -97,7 +97,7 @@ Mi topología de laboratorio está configurada de la siguiente manera:
 ### 🚀 Comando de Ejecución
 
 ```bash
-sudo python3 dhcp_rogue.py
+sudo python3 dhcp_spoofing.py
 ```
 
 ### 📝 Configuración Interna del Script
@@ -427,15 +427,6 @@ Sin embargo, las defensas modernas como **DHCP Snooping**, **Port Security** y *
 Este laboratorio me permitió entender tanto la vulnerabilidad del protocolo DHCP como las mejores prácticas de seguridad en redes empresariales. La segmentación por VLANs y la configuración de switches con características de seguridad son fundamentales para prevenir estos ataques en entornos de producción.
 
 **⚠️ Advertencia Legal:** Este script es exclusivamente para fines educativos y de prueba en entornos controlados. Realizar este ataque en redes sin autorización explícita es ilegal y puede resultar en sanciones penales.
-
----
-
-## 📚 Referencias
-
-- [RFC 2131 - Dynamic Host Configuration Protocol](https://tools.ietf.org/html/rfc2131)
-- [Cisco IOS DHCP Snooping Configuration Guide](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-0SY/configuration/guide/15_0_sy_swcg/dhcp_snooping.html)
-- [Scapy Documentation - DHCP Layer](https://scapy.readthedocs.io/en/latest/api/scapy.layers.dhcp.html)
-- [OWASP Testing Guide - Network Layer Attacks](https://owasp.org/www-project-web-security-testing-guide/)
 
 ---
 
