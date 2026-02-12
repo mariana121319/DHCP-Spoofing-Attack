@@ -114,55 +114,12 @@ El script está configurado con los siguientes parámetros para mi topología:
 
 ## 🔍 Explicación Paso a Paso de la Ejecución
 
-### **Paso 1: Preparación del Entorno**
-
-Antes de ejecutar el ataque, verifico mi configuración de red en Kali Linux:
-
-```bash
-ip addr show eth0
-```
-
-Debo ver:
-```
-eth0: 12.0.20.2/24
-```
-
-También verifico que puedo alcanzar el gateway legítimo:
-
-```bash
-ping 12.0.20.1 -c 4
-```
-
-### **Paso 2: Habilitar el IP Forwarding**
-
-Para que mi Kali funcione como un router intermedio y pueda reenviar el tráfico de las víctimas (evitando que se queden sin internet), activo el reenvío de paquetes:
-
-```bash
-sudo sysctl -w net.ipv4.ip_forward=1
-```
-
-Verifico:
-```bash
-cat /proc/sys/net/ipv4/ip_forward
-```
-
-Debe devolver `1`.
-
-### **Paso 3: Configurar Reglas de NAT (Opcional pero Recomendado)**
-
-Para que las víctimas mantengan conectividad (y no sospechen), configuro NAT para reenviar su tráfico:
-
-```bash
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-sudo iptables -A FORWARD -i eth0 -o eth0 -j ACCEPT
-```
-
-### **Paso 4: Ejecutar el Script de DHCP Rogue**
+### **Paso 1: Ejecutar el Script de DHCP Spoofing**
 
 Lanzo mi servidor DHCP falso:
 
 ```bash
-sudo python3 dhcp_rogue.py
+sudo python3 dhcp_spoofing.py
 ```
 
 El script queda escuchando en modo pasivo y muestra:
@@ -170,7 +127,7 @@ El script queda escuchando en modo pasivo y muestra:
 [*] DHCP Spoofing activo...
 ```
 
-### **Paso 5: Forzar Renovación DHCP en la Víctima (Windows)**
+### **Paso 2: Forzar Renovación DHCP en la Víctima (Windows)**
 
 Desde el equipo Windows (víctima), ejecuto:
 
@@ -179,7 +136,7 @@ ipconfig /release
 ipconfig /renew
 ```
 
-### **Paso 6: Observar el Ataque en Acción**
+### **Paso 3: Observar el Ataque en Acción**
 
 En mi terminal de Kali veo:
 ```
@@ -189,7 +146,7 @@ En mi terminal de Kali veo:
 [✓] ACK enviado – víctima comprometida
 ```
 
-### **Paso 7: Verificar la Configuración en Windows**
+### **Paso 4: Verificar la Configuración en Windows**
 
 Desde Windows, verifico que recibió mi configuración maliciosa:
 
@@ -206,21 +163,6 @@ Debo ver:
 ```
 
 **🎯 Éxito:** Ahora todo el tráfico de Windows pasa por mi Kali Linux.
-
-### **Paso 8: Capturar Tráfico (MITM)**
-
-Para interceptar el tráfico de la víctima, uso Wireshark o tcpdump:
-
-```bash
-sudo tcpdump -i eth0 -w captura_mitm.pcap
-```
-
-O para ver tráfico HTTP en tiempo real:
-
-```bash
-sudo tcpdump -i eth0 -A | grep -i 'GET\|POST\|Host:'
-```
-
 ---
 
 ## 🖥️ Qué se Observa en el Router
@@ -271,29 +213,20 @@ Router# show logging | include DHCP
 
 Para documentar el ataque, incluyo las siguientes capturas en la carpeta `screenshots/`:
 
-### **1. Configuración inicial de Kali Linux**
-![Kali Config](screenshots/01_kali_config.png)
-_Salida de `ip addr show eth0` mostrando 12.0.20.2/24_
-
-### **2. Ejecución del script dhcp_rogue.py**
-![Script Running](screenshots/02_script_running.png)
+### **1. Ejecución del script dhcp_spoofing.py**
+<img width="446" height="51" alt="image" src="https://github.com/user-attachments/assets/83639e84-aaf9-467a-8a4e-b83fd7d80450" />
 _Terminal con el mensaje "[*] DHCP Spoofing activo..."_
 
-### **3. Intercepción exitosa**
-![Attack Success](screenshots/03_attack_success.png)
+### **2. Intercepción exitosa**
+<img width="431" height="255" alt="image" src="https://github.com/user-attachments/assets/5a2c5da6-010b-4c30-8143-bf4af5e91137" />
 _Mensajes de DISCOVER, OFFER, REQUEST y ACK en la terminal_
 
-### **4. Configuración IP de la víctima comprometida**
-![Victim Compromised](screenshots/04_victim_ipconfig.png)
-_`ipconfig /all` en Windows mostrando gateway 12.0.20.2_
+### **3. Configuración IP de la víctima comprometida**
+<img width="630" height="318" alt="image" src="https://github.com/user-attachments/assets/7a60fd66-3804-4bfa-a460-1240ade8fe98" />
 
-### **5. Captura de tráfico con Wireshark**
-![Wireshark Capture](screenshots/05_wireshark_dhcp.png)
-_Wireshark filtrando `bootp` mostrando paquetes DHCP maliciosos_
+<img width="633" height="321" alt="image" src="https://github.com/user-attachments/assets/e20c6313-5152-46f8-a4f2-84101f2a9778" />
 
-### **6. Verificación en el router**
-![Router Verification](screenshots/06_router_dhcp_pool.png)
-_`show ip dhcp binding` en el router vIOS_
+_`ipconfig /all` en Windows mostrando gateway 10.10.10.1_
 
 ---
 
@@ -431,6 +364,7 @@ Este laboratorio me permitió entender tanto la vulnerabilidad del protocolo DHC
 ---
 
 **Autor:** Mariana  
-**Fecha:** Febrero 2026  
+**Fecha:** Febrero 2026 
+**Matricula** 2024-1200
 **Laboratorio:** Seguridad en Redes - Ataques Layer 2  
 **Repositorio:** [github.com/mariana121319/DHCP-Spoofing-Attack](https://github.com/mariana121319/DHCP-Spoofing-Attack)
