@@ -68,6 +68,7 @@ Mi topología de laboratorio está configurada de la siguiente manera:
     │ DHCP Auto  │  │ 12.0.20.2   │
     └────────────┘  └─────────────┘
 ```
+<img width="721" height="814" alt="image" src="https://github.com/user-attachments/assets/dc7d8042-c26d-4f58-b7a8-be8a81e045e0" />
 
 ### 🔧 Direccionamiento IP Utilizado
 
@@ -215,10 +216,12 @@ Para documentar el ataque, incluyo las siguientes capturas en la carpeta `screen
 
 ### **1. Ejecución del script dhcp_spoofing.py**
 <img width="446" height="51" alt="image" src="https://github.com/user-attachments/assets/83639e84-aaf9-467a-8a4e-b83fd7d80450" />
+
 _Terminal con el mensaje "[*] DHCP Spoofing activo..."_
 
 ### **2. Intercepción exitosa**
 <img width="431" height="255" alt="image" src="https://github.com/user-attachments/assets/5a2c5da6-010b-4c30-8143-bf4af5e91137" />
+
 _Mensajes de DISCOVER, OFFER, REQUEST y ACK en la terminal_
 
 ### **3. Configuración IP de la víctima comprometida**
